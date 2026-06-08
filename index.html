@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ARTSOUL LABS — Discord · Telegram · Web3 Automation</title>
+<meta name="description" content="Custom Discord bots, Telegram bots and Web3/AI automation for crypto teams, founders and online communities. Built fast, shipped clean." />
+<link rel="icon" type="image/png" sizes="any" href="images/ArtSoul_LABS_favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0b0a; --bg-2:#0f110f; --line:rgba(205,255,80,.14); --line-soft:rgba(255,255,255,.08);
+    --ink:#f3f5ee; --ink-dim:#9aa093; --ink-faint:#5f6459;
+    --acid:#cdff50; --acid-deep:#a6d62f; --amber:#ff6a2b;
+    --radius:18px; --maxw:1240px; --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",sans-serif;font-weight:400;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative}
+/* Автоматический размер логотипа-картинки */
+  .brand-img {
+    height: 24px; /* Идеальная высота, чтобы не разносить строку */
+    width: auto;  /* Ширина подстроится сама с сохранением пропорций */
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .bg-fx .glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.55}
+  .glow.a{width:50vw;height:50vw;left:-10vw;top:-10vw;background:radial-gradient(circle,rgba(205,255,80,.18),transparent 70%)}
+  .glow.b{width:46vw;height:46vw;right:-12vw;top:18vh;background:radial-gradient(circle,rgba(255,106,43,.10),transparent 70%)}
+  .glow.c{width:54vw;height:54vw;left:20vw;bottom:-20vw;background:radial-gradient(circle,rgba(205,255,80,.07),transparent 70%)}
+  .grid-lines{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 0%,transparent 80%);mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 0%,transparent 80%)}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.045;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .cursor-glow{position:fixed;top:0;left:0;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(205,255,80,.10),transparent 65%);transform:translate(-50%,-50%);pointer-events:none;z-index:2;transition:opacity .3s;opacity:0}
+
+  .wrap{position:relative;z-index:3;max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:50;transition:all .35s var(--ease)}
+  header.scrolled{background:rgba(10,11,10,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink);font-weight:700;letter-spacing:-.02em}
+  .brand .mark{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--acid);color:#0a0b0a;font-family:"Space Mono",monospace;font-weight:700;font-size:15px;box-shadow:0 0 22px rgba(205,255,80,.45)}
+  .brand b{font-size:18px}
+  .brand .sub{font-family:"Space Mono",monospace;font-size:10px;color:var(--acid);letter-spacing:.18em;margin-top:2px}
+  nav .links{display:flex;align-items:center;gap:30px}
+  nav .links a{color:var(--ink-dim);text-decoration:none;font-size:14.5px;font-weight:500;transition:color .2s;position:relative}
+  nav .links a:hover{color:var(--ink)}
+  nav .links a::after{content:"";position:absolute;left:0;bottom:-6px;height:1px;width:0;background:var(--acid);transition:width .25s var(--ease)}
+  nav .links a:hover::after{width:100%}
+  .btn{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:14.5px;cursor:pointer;text-decoration:none;border:none;padding:12px 22px;border-radius:100px;transition:all .25s var(--ease);display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+  .btn-primary{background:var(--acid);color:#0a0b0a}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 34px rgba(205,255,80,.32)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-soft)}
+  .btn-ghost:hover{border-color:var(--acid);color:var(--acid)}
+  .menu-btn{display:none;background:none;border:1px solid var(--line-soft);border-radius:10px;width:44px;height:42px;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+  .menu-btn span{display:block;width:18px;height:2px;background:var(--ink);transition:.3s}
+  .menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .menu-btn.open span:nth-child(2){opacity:0}
+  .menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .mobile-menu{position:fixed;inset:74px 0 auto 0;background:rgba(10,11,10,.97);backdrop-filter:blur(16px);z-index:49;border-bottom:1px solid var(--line-soft);transform:translateY(-120%);transition:transform .4s var(--ease);padding:18px 28px 28px}
+  .mobile-menu.open{transform:translateY(0)}
+  .mobile-menu a{display:block;color:var(--ink);text-decoration:none;font-size:20px;font-weight:600;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .mobile-menu .btn{width:100%;justify-content:center;margin-top:18px}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  .hero{padding:150px 0 70px;position:relative}
+  .pill{display:inline-flex;align-items:center;gap:9px;font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.05em;color:var(--acid);border:1px solid var(--line);border-radius:100px;padding:8px 15px;background:rgba(205,255,80,.04)}
+  .pulse{width:7px;height:7px;border-radius:50%;background:var(--acid);box-shadow:0 0 0 0 rgba(198, 119, 255, 0.7);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(205,255,80,.6)}70%{box-shadow:0 0 0 10px rgba(205,255,80,0)}100%{box-shadow:0 0 0 0 rgba(205,255,80,0)}}
+  h1.hero-title{font-size:clamp(42px,8vw,98px);line-height:.96;font-weight:700;letter-spacing:-.035em;margin:26px 0 22px;max-width:14ch}
+  h1.hero-title em{font-style:normal;color:var(--acid);white-space:nowrap}
+  .hero-sub{font-size:clamp(17px,2.2vw,21px);color:var(--ink-dim);max-width:56ch;line-height:1.55}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+  .hero-meta{display:flex;gap:34px;flex-wrap:wrap;margin-top:54px;padding-top:30px;border-top:1px solid var(--line-soft)}
+  .hero-meta .m{display:flex;flex-direction:column}
+  .hero-meta .m b{font-size:30px;font-weight:700;letter-spacing:-.02em}
+  .hero-meta .m b .u{color:var(--acid)}
+  .hero-meta .m span{font-family:"Space Mono",monospace;font-size:11.5px;color:var(--ink-faint);letter-spacing:.04em;margin-top:3px}
+
+  .marquee{margin:64px 0 0;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);overflow:hidden;padding:18px 0;position:relative;z-index:3}
+  .marquee .track{display:flex;gap:48px;width:max-content;animation:scroll 34s linear infinite}
+  .marquee:hover .track{animation-play-state:paused}
+  .marquee .item{font-family:"Space Mono",monospace;font-size:14px;color:var(--ink-faint);display:flex;align-items:center;gap:48px;letter-spacing:.04em}
+  .marquee .item::after{content:"\25C6";color:var(--acid);font-size:9px}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  section{position:relative;z-index:3;padding:100px 0}
+  .eyebrow{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.18em;color:var(--acid);text-transform:uppercase;display:flex;align-items:center;gap:12px}
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--acid)}
+  h2.sec{font-size:clamp(30px,5vw,52px);font-weight:700;letter-spacing:-.03em;margin:18px 0 0;line-height:1.04}
+  .sec-head{max-width:680px;margin-bottom:54px}
+  .sec-head p{color:var(--ink-dim);font-size:17px;margin-top:16px;max-width:54ch}
+
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .svc{border:1px solid var(--line-soft);border-radius:var(--radius);padding:30px 28px 32px;background:linear-gradient(180deg,rgba(255,255,255,.018),transparent);transition:all .35s var(--ease);position:relative;overflow:hidden}
+  .svc::before{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at var(--mx,50%) 0%,rgba(205,255,80,.10),transparent 70%);opacity:0;transition:opacity .4s}
+  .svc:hover{border-color:var(--line);transform:translateY(-5px)}
+  .svc:hover::before{opacity:1}
+  .svc .ic{width:52px;height:52px;border-radius:13px;display:grid;place-items:center;background:rgba(205,255,80,.08);border:1px solid var(--line);margin-bottom:22px}
+  .svc .ic svg{width:26px;height:26px;stroke:var(--acid);fill:none;stroke-width:1.7}
+  .svc h3{font-size:22px;font-weight:600;letter-spacing:-.02em;margin-bottom:10px}
+  .svc p{color:var(--ink-dim);font-size:15px;line-height:1.6}
+  .svc ul{list-style:none;margin-top:18px;display:flex;flex-direction:column;gap:9px}
+  .svc li{font-size:14px;color:var(--ink-dim);display:flex;align-items:center;gap:10px;font-family:"Space Mono",monospace;letter-spacing:-.01em}
+  .svc li::before{content:"\25B8";color:var(--acid);font-size:11px}
+  .svc .price{margin-top:24px;font-family:"Space Mono",monospace;font-size:13px;color:var(--ink-faint);padding-top:18px;border-top:1px solid var(--line-soft)}
+  .svc .price b{color:var(--ink);font-size:19px;font-family:"Bricolage Grotesque",sans-serif}
+
+  .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .card{border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;background:var(--bg-2);transition:all .4s var(--ease);position:relative;display:flex;flex-direction:column;min-height:330px;cursor:pointer;text-align:left;font:inherit;color:inherit;padding:0;width:100%}
+  .card:hover{border-color:var(--line);transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .card .visual{height:190px;position:relative;overflow:hidden;border-bottom:1px solid var(--line-soft);display:grid;place-items:center}
+  .card .visual .blob{position:absolute;inset:0;opacity:.9;transition:transform .6s var(--ease);z-index:0}
+  .card:hover .visual .blob{transform:scale(1.08)}
+  .card .visual .cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s,transform .6s var(--ease);z-index:1}
+  .card:hover .visual .cover{transform:scale(1.05)}
+  .v1{background:radial-gradient(120% 120% at 20% 10%,rgba(205,255,80,.30),transparent 55%),radial-gradient(120% 120% at 90% 90%,rgba(88,101,242,.35),transparent 55%),#0c0e0c}
+  .v2{background:radial-gradient(120% 120% at 80% 10%,rgba(38,166,255,.30),transparent 55%),radial-gradient(120% 120% at 10% 90%,rgba(205,255,80,.22),transparent 55%),#0c0e0c}
+  .v3{background:radial-gradient(120% 120% at 50% 0%,rgba(255,106,43,.28),transparent 55%),radial-gradient(120% 120% at 50% 100%,rgba(205,255,80,.20),transparent 55%),#0c0e0c}
+  .v4{background:radial-gradient(120% 120% at 10% 10%,rgba(153,69,255,.34),transparent 55%),radial-gradient(120% 120% at 90% 90%,rgba(20,241,149,.30),transparent 55%),#0c0e0c}
+  .card .visual .glyph{position:relative;z-index:2;font-family:"Space Mono",monospace;font-size:13px;color:rgba(255,255,255,.85);letter-spacing:.1em;background:rgba(10,11,10,.55);border:1px solid rgba(255,255,255,.14);padding:7px 14px;border-radius:100px;backdrop-filter:blur(4px)}
+  .card.has-cover .visual .glyph{opacity:0}
+   .badge{position:absolute;top:14px;right:14px;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.1em;padding:5px 10px;border-radius:100px;backdrop-filter:blur(4px);z-index:3}
+  .badge.dev{color:var(--amber);border:1px solid rgba(255,106,43,.4);background:rgba(255,106,43,.10)}
+  .badge.beta{color:var(--acid);border:1px solid var(--line);background:rgba(205,255,80,.08)}
+  .badge.live{color:#14f195;border:1px solid rgba(20,241,149,.4);background:rgba(20,241,149,.10)}
+  .card .body{padding:24px 26px 26px;flex:1;display:flex;flex-direction:column}
+  .card .tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .card .tag{font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--acid);border:1px solid var(--line);padding:4px 10px;border-radius:100px;text-transform:uppercase}
+  .card h3{font-size:21px;font-weight:600;letter-spacing:-.02em;margin-bottom:8px}
+  .card p{color:var(--ink-dim);font-size:14.5px;line-height:1.6;flex:1}
+  .card .foot{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:18px;border-top:1px solid var(--line-soft)}
+  .card .foot .stat{font-family:"Space Mono",monospace;font-size:12px;color:var(--ink-faint)}
+  .card .foot .stat b{color:var(--acid);font-family:"Space Mono",monospace}
+  .card .arrow{width:36px;height:36px;border-radius:50%;border:1px solid var(--line-soft);display:grid;place-items:center;transition:all .25s;flex-shrink:0}
+  .card:hover .arrow{background:var(--acid);border-color:var(--acid)}
+  .card .arrow svg{width:15px;height:15px;stroke:var(--ink);fill:none;transition:.25s}
+  .card:hover .arrow svg{stroke:#0a0b0a}
+
+  .modal-back{position:fixed;inset:0;z-index:100;background:rgba(5,6,5,.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s}
+  .modal-back.open{opacity:1;pointer-events:auto}
+  .modal{background:var(--bg-2);border:1px solid var(--line);border-radius:24px;max-width:780px;width:100%;max-height:88vh;overflow-y:auto;transform:translateY(20px) scale(.98);transition:transform .35s var(--ease);position:relative}
+  .modal-back.open .modal{transform:none}
+  .m-close{position:absolute;top:16px;right:16px;z-index:8;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(10,11,10,.6);color:var(--ink);cursor:pointer;font-size:18px;display:grid;place-items:center;backdrop-filter:blur(4px)}
+  .m-close:hover{border-color:var(--acid);color:var(--acid)}
+  .m-media-wrap{position:relative}
+  .m-placeholder{height:230px;display:grid;place-items:center;border-bottom:1px solid var(--line-soft)}
+  .m-placeholder span{position:relative;z-index:2;font-family:"Space Mono",monospace;font-size:12px;color:rgba(255,255,255,.6);border:1px dashed rgba(255,255,255,.25);border-radius:12px;padding:18px 24px;background:rgba(10,11,10,.5)}
+  .m-embed{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-bottom:1px solid var(--line-soft)}
+  .m-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .m-video{width:100%;display:block;background:#000;border-bottom:1px solid var(--line-soft)}
+  /* carousel */
+  .carousel{position:relative;overflow:hidden;border-bottom:1px solid var(--line-soft);background:#000}
+  .car-track{display:flex;transition:transform .45s var(--ease)}
+  .car-track img{min-width:100%;width:100%;display:block;object-fit:cover}
+  .car-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(10,11,10,.55);color:var(--ink);cursor:pointer;display:grid;place-items:center;font-size:22px;line-height:1;backdrop-filter:blur(4px);z-index:4;transition:.2s}
+  .car-nav:hover{border-color:var(--acid);color:var(--acid)}
+  .car-nav.prev{left:14px}.car-nav.next{right:14px}
+  .car-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:4}
+  .car-dots .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer;border:0;padding:0;transition:.25s var(--ease)}
+  .car-dots .dot.on{background:var(--acid);width:22px;border-radius:100px}
+  .m-body{padding:30px 34px 34px}
+  .m-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+  .modal h3{font-size:28px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px}
+  .m-desc{color:var(--ink-dim);font-size:16px;line-height:1.65;margin-bottom:22px}
+  .m-feats{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px}
+  .m-feats li{font-family:"Space Mono",monospace;font-size:13px;color:var(--ink-dim);display:flex;gap:9px;align-items:center}
+  .m-feats li::before{content:"\25B8";color:var(--acid)}
+  .m-actions{display:flex;gap:12px;flex-wrap:wrap}
+
+  .form-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .field{display:flex;flex-direction:column;gap:8px}
+  .field.full{grid-column:1 / -1}
+  .field label{font-family:"Space Mono",monospace;font-size:11.5px;letter-spacing:.1em;color:var(--ink-dim);text-transform:uppercase}
+  .field input,.field select,.field textarea{background:rgba(255,255,255,.03);border:1px solid var(--line-soft);border-radius:12px;padding:13px 15px;color:var(--ink);font-family:"Bricolage Grotesque",sans-serif;font-size:15px;transition:border-color .2s;outline:none;color-scheme:dark;}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--acid)}
+  .field select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23cdff50' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+  .field select option{background: #0f110f; color: #f3f5ee;}
+  .field textarea{resize:vertical;min-height:110px}
+  .form-actions{grid-column:1 / -1;display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:4px}
+  .form-note{font-family:"Space Mono",monospace;font-size:11.5px;color:var(--acid);opacity:0;transition:opacity .3s}
+  .form-note.show{opacity:1}
+  .form-note.err{color:var(--amber)}
+
+  .cta-box{border:1px solid var(--line);border-radius:28px;padding:54px 48px;position:relative;overflow:hidden;background:radial-gradient(120% 140% at 50% 0%,rgba(205,255,80,.10),transparent 60%),var(--bg-2)}
+  .cta-box .cta-head{text-align:center;max-width:36ch;margin:0 auto 36px}
+  .cta-box h2{font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.06;margin-top:16px}
+  .cta-box .cta-head p{color:var(--ink-dim);font-size:17px;margin-top:16px}
+
+  footer{position:relative;z-index:3;border-top:1px solid var(--line-soft);padding:54px 0 40px;margin-top:30px}
+  .foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap}
+  .foot-grid .socials{display:flex;gap:12px;flex-wrap:wrap}
+  .foot-grid .socials a{font-family:"Space Mono",monospace;font-size:13px;color:var(--ink-dim);text-decoration:none;border:1px solid var(--line-soft);padding:9px 15px;border-radius:100px;transition:.2s}
+  .foot-grid .socials a:hover{border-color:var(--acid);color:var(--acid)}
+  .foot-bottom{margin-top:40px;padding-top:24px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:"Space Mono",monospace;font-size:12px;color:var(--ink-faint)}
+
+  @media(max-width:920px){.svc-grid{grid-template-columns:repeat(2,1fr)}.work-grid{grid-template-columns:1fr}}
+  @media(max-width:680px){
+    nav .links,header .btn.btn-primary{display:none}
+    .menu-btn{display:flex}
+    .svc-grid{grid-template-columns:1fr}
+    .form-wrap{grid-template-columns:1fr}
+    .m-feats{grid-template-columns:1fr}
+    .hero{padding:120px 0 50px}
+    .hero-meta{gap:24px}
+    .cta-box{padding:40px 22px}
+    .wrap{padding:0 20px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .reveal{opacity:1!important;transform:none!important}
+  }
+@media(prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .reveal{opacity:1!important;transform:none!important}
+  }
+
+  /* Эффект переливающегося текста с поддержкой палитры в редакторе */
+  .gradient-text {
+    background: linear-gradient(
+      120deg, 
+      lch(87.37% 109.98 130.73), 
+      #ccff00, 
+      lab(97.18% -11.68 27.56), 
+      hsl(85, 100%, 50%)
+    );
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 5s linear infinite;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-fx"><div class="glow a"></div><div class="glow b"></div><div class="glow c"></div></div>
+<div class="grid-lines"></div>
+<div class="grain"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<header id="header">
+  <div class="wrap nav">
+   <a href="#top" class="brand"></span class="gradient-text"><img src="images/ArtSoul_AS_512.png"></span><span><b class="gradient-text">ARTSOUL LABS</b><br><span class="gradient-text">AUTOMATION STUDIO</span></span></a>
+    <nav class="links"></span><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a href="#contact">Contact</a></nav>
+    <a href="#contact" class="btn btn-primary">Hire me <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a href="#contact">Contact</a>
+  <a href="#contact" class="btn btn-primary">Hire me</a>
+</div>
+
+<span id="top"></span>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="reveal"><span class="pill"><span class="pulse"></span>AVAILABLE FOR NEW PROJECTS · 2026</span></div>
+    <h1 class="hero-title reveal">Bots &amp; <em>Web3 automation</em> that ship in days, not months.</h1>
+    <p class="hero-sub reveal">I build custom Discord bots, Telegram bots and AI / Web3 automation for crypto teams, founders and online communities. Clean code, real demos, fast delivery.</p>
+    <div class="hero-cta reveal">
+      <a href="#contact" class="btn btn-primary">Start a project <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="#work" class="btn btn-ghost">See the work</a>
+    </div>
+    <div class="hero-meta reveal">
+      <div class="m"><b><span class="count" data-to="12">0</span><span class="u">+</span></b><span>BOTS &amp; TOOLS BUILT</span></div>
+      <div class="m"><b><span class="count" data-to="48">0</span><span class="u">H</span></b><span>AVG. FIRST DEMO</span></div>
+      <div class="m"><b><span class="u">$</span><span class="count" data-to="300">0</span><span class="u">+</span></b><span>STARTING PRICE</span></div>
+      <div class="m"><b><span class="count" data-to="100">0</span><span class="u">%</span></b><span>OWNED SOURCE CODE</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="track">
+    <span class="item">DISCORD.JS</span><span class="item">TELEGRAM BOT API</span><span class="item">NEXT.JS</span><span class="item">SUPABASE</span><span class="item">BASE</span><span class="item">ETHEREUM</span><span class="item">SOLANA</span><span class="item">WALLET CONNECT</span><span class="item">OPENAI</span><span class="item">NODE.JS</span><span class="item">VERCEL</span>
+    <span class="item">DISCORD.JS</span><span class="item">TELEGRAM BOT API</span><span class="item">NEXT.JS</span><span class="item">SUPABASE</span><span class="item">BASE</span><span class="item">ETHEREUM</span><span class="item">SOLANA</span><span class="item">WALLET CONNECT</span><span class="item">OPENAI</span><span class="item">NODE.JS</span><span class="item">VERCEL</span>
+  </div>
+</div>
+
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">What I build</span><h2 class="sec">Three things, done properly.</h2><p>No bloated agency packages. Pick what you need — you get working software, the source code, and a person who actually replies.</p></div>
+    <div class="svc-grid">
+      <div class="svc reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M8 12a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z"/><path d="M5 19c1.5-3 4-4 7-4s5.5 1 7 4"/><path d="M9 4l1 2M15 4l-1 2"/></svg></div><h3>Discord Bots</h3><p>Community engines that handle the boring stuff so your mods don't have to.</p><ul><li>Roles &amp; onboarding</li><li>Tickets &amp; support</li><li>Anti-spam / anti-raid</li><li>Web3 wallet verification</li><li>NFT / auction alerts</li></ul><div class="price">from <b>$300</b></div></div>
+      <div class="svc reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M21 4 3 11l6 2 2 6 3-4 5 3 2-14Z"/><path d="M9 13l9-7"/></svg></div><h3>Telegram Bots</h3><p>Mini-apps and assistants that run your business inside a chat.</p><ul><li>CRM &amp; client booking</li><li>Payments &amp; finance tracking</li><li>Reminders &amp; broadcasts</li><li>AI assistant flows</li><li>Admin dashboards</li></ul><div class="price">from <b>$400</b></div></div>
+      <div class="svc reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/><path d="m12 12 9-5M12 12v10M12 12 3 7"/></svg></div><h3>Web3 / AI Automation</h3><p>The connective tissue for crypto teams — sites, tools and agents.</p><ul><li>Wallet-connect landing pages</li><li>Dashboards &amp; analytics</li><li>Lead / demand scanners</li><li>AI agents &amp; workflows</li><li>Community tooling</li></ul><div class="price">from <b>$500</b></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Selected work</span><h2 class="sec">Things I'm building.</h2><p>Tap any project to see screenshots and a short demo. Some are still in active development — status is marked honestly on each card.</p></div>
+    <div class="work-grid">
+      <button class="card reveal" data-id="guardian">
+        <div class="visual"><div class="blob v1"></div><img class="cover" alt=""><span class="badge beta">BETA</span><span class="glyph">DISCORD · NODE</span></div>
+        <div class="body"><div class="tags"><span class="tag">Discord</span><span class="tag">Anti-raid</span><span class="tag">Web3</span></div><h3>Community Guardian Bot</h3><p>Roles, tickets, anti-raid protection and on-chain wallet verification for crypto community servers.</p><div class="foot"><span class="stat"><b>Roles</b> · Tickets · Anti-raid</span><span class="arrow"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div></div>
+      </button>
+      <button class="card reveal" data-id="finance">
+        <div class="visual"><div class="blob v2"></div><img class="cover" alt=""><span class="badge dev">IN DEV</span><span class="glyph">TELEGRAM · SUPABASE</span></div>
+        <div class="body"><div class="tags"><span class="tag">Telegram</span><span class="tag">Finance</span><span class="tag">AI</span></div><h3>Finance Assistant Bot</h3><p>Personal finance tracker inside Telegram — logs spending, sends reminders and answers questions with AI.</p><div class="foot"><span class="stat"><b>Expenses</b> · Reminders · AI</span><span class="arrow"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div></div>
+      </button>
+      <button class="card reveal" data-id="radar">
+        <div class="visual"><div class="blob v3"></div><img class="cover" alt=""><span class="badge dev">IN DEV</span><span class="glyph">NEXT.JS · OPENAI</span></div>
+        <div class="body"><div class="tags"><span class="tag">Web3</span><span class="tag">Scanner</span><span class="tag">SaaS</span></div><h3>Web3 Lead Radar</h3><p>Scans public posts for paid dev gigs, scores each lead with AI and drafts a reply — a demand scanner for builders.</p><div class="foot"><span class="stat"><b>Multi-source</b> · AI scoring</span><span class="arrow"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div></div>
+      </button>
+      <button class="card reveal" data-id="artsoul">
+        <div class="visual"><div class="blob v4"></div><img class="cover" alt=""><span class="badge dev">IN DEV</span><span class="glyph">DISCORD · BASE</span></div>
+        <div class="body"><div class="tags"><span class="tag">Discord</span><span class="tag">NFT</span><span class="tag">Auctions</span></div><h3>ArtSoul OS</h3><p>Discord bot for the ArtSoul NFT art protocol — runs auction &amp; marketplace alerts, wallet verification and collector roles.</p><div class="foot"><span class="stat"><b>Auctions</b> · Marketplace · Wallet</span><span class="arrow"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div></div>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">How it works</span><h2 class="sec">From idea to live bot in 4 steps.</h2></div>
+    <div class="svc-grid">
+      <div class="svc reveal" style="padding:0;background:none;border:none;border-top:2px solid var(--line);border-radius:0;padding-top:20px"><div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--acid)">01</div><h3 style="margin:14px 0 8px">Quick call</h3><p>15 minutes to nail down exactly what you need and what it should cost. No fluff.</p></div>
+      <div class="svc reveal" style="padding:0;background:none;border:none;border-top:2px solid var(--line);border-radius:0;padding-top:20px"><div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--acid)">02</div><h3 style="margin:14px 0 8px">Demo first</h3><p>You see a working version fast — usually within 48 hours — before any big commitment.</p></div>
+      <div class="svc reveal" style="padding:0;background:none;border:none;border-top:2px solid var(--line);border-radius:0;padding-top:20px"><div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--acid)">03</div><h3 style="margin:14px 0 8px">Build &amp; polish</h3><p>I ship the full feature set, test it on real data and tune it with your feedback.</p></div>
+      <div class="svc reveal" style="padding:0;background:none;border:none;border-top:2px solid var(--line);border-radius:0;padding-top:20px"><div style="font-family:'Space Mono',monospace;font-size:13px;color:var(--acid)">04</div><h3 style="margin:14px 0 8px">Handover</h3><p>You get the source code, deployment and a short guide. It's yours to keep and grow.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <div class="cta-head"><span class="eyebrow" style="justify-content:center">Let's build</span><h2>Tell me what to automate.</h2><p>Fill this in — I reply fastest on Telegram, usually the same day.</p></div>
+      <div class="form-wrap">
+        <div class="field"><label for="f-name">Your name</label><input id="f-name" type="text" placeholder="John / @handle"></div>
+        <div class="field"><label for="f-contact">Email or Telegram</label><input id="f-contact" type="text" placeholder="you@mail.com / @username"></div>
+        <div class="field"><label for="f-type">What do you need</label><select id="f-type"><option>Discord bot</option><option>Telegram bot</option><option>Web3 site / wallet connect</option><option>AI automation / agent</option><option>Lead / demand scanner</option><option>Something else</option></select></div>
+        <div class="field"><label for="f-budget">Budget</label><select id="f-budget"><option>Not sure yet</option><option>$100 – $300</option><option>$300 – $500</option><option>$500 – $1000</option><option>$1000+</option></select></div>
+        <div class="field"><label for="f-timeline">Timeline</label><select id="f-timeline"><option>ASAP</option><option>This week</option><option>2–4 weeks</option><option>Flexible</option></select></div>
+        <div class="field"><label for="f-pay">Payment</label><select id="f-pay"><option>Crypto (USDC / ETH / SOL)</option><option>Fiat / card</option><option>Either</option></select></div>
+        <div class="field full"><label for="f-msg">Describe the project</label><textarea id="f-msg" placeholder="What should it do? Any features, references, deadlines..."></textarea></div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="sendTg">Message me on Telegram <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <button class="btn btn-ghost" id="sendForm">Send the brief</button>
+          <span class="form-note" id="formNote"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <a href="#top" class="brand"><span class="gradient-text"><img src="images/ArtSoul_AS_512.png" alt="AS" class="brand-img"></span><span><b class="gradient-text">ARTSOUL LABS</b><br><span class="gradient-text">AUTOMATION STUDIO</span></span></a>
+      <div class="socials">
+        <a href="https://t.me/maysonkiller23" target="_blank" rel="noopener">TELEGRAM</a>
+        <a href="https://x.com/maysonkiller23" target="_blank" rel="noopener">X / TWITTER</a>
+        <a href="https://github.com/maysonkiller" target="_blank" rel="noopener">GITHUB</a>
+        <a href="https://discord.com/users/560945997220413440" target="_blank" rel="noopener">DISCORD</a>
+      </div>
+    </div>
+    <div class="foot-bottom"><span>© <span id="year"></span> ARTSOUL LABS — BUILT WITH CODE &amp; COFFEE</span><span>DISCORD · TELEGRAM · WEB3 · AI</span></div>
+  </div>
+</footer>
+
+<div class="modal-back" id="modalBack">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="m-close" id="modalClose" aria-label="Close">&times;</button>
+    <div class="m-media-wrap" id="mMedia"></div>
+    <div class="m-body">
+      <div class="m-tags" id="mTags"></div>
+      <h3 id="mTitle"></h3>
+      <p class="m-desc" id="mDesc"></p>
+      <ul class="m-feats" id="mFeats"></ul>
+      <div class="m-actions" id="mActions"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ========= YOUR CONTACTS =========
+  const TG = "maysonkiller23";              // Telegram username
+  const TO_EMAIL = "maysonkiller@gmail.com";  // fallback email (used if Formspree not set)
+  // Paste your Formspree form endpoint here to receive submissions by email automatically.
+  // Sign up free at formspree.io -> New form -> copy the URL, e.g. https://formspree.io/f/abcdwxyz
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xwvjljrp";
+
+  // ========= PROJECT DATA — edit freely =========
+  // cover: image shown on the card (replaces the blurred gradient)
+  // shots: array of screenshot image URLs (carousel inside the modal)
+  // video: a YouTube, Loom, or .mp4 URL (auto-embedded above the screenshots)
+  const PROJECTS = {
+    guardian:{title:"Community Guardian Bot",blob:"v1",badge:"BETA",
+      tags:["Discord","Anti-raid","Web3"],
+      desc:"A moderation and onboarding engine for crypto Discord servers. Handles auto-roles, ticket support, raid protection and on-chain wallet verification so the community stays clean without a full mod team.",
+      feats:["Auto-roles & onboarding","Ticket support system","Anti-spam / anti-raid","Wallet verification","Welcome & rules flow","Logging & audit"],
+      cover:"",shots:[],video:""},
+    finance:{title:"Finance Assistant Bot",blob:"v2",badge:"IN DEV",
+      tags:["Telegram","Finance","AI"],
+      desc:"A personal finance assistant living inside Telegram. Log expenses in plain language, get reminders, see summaries and ask the AI questions about your spending.",
+      feats:["Natural-language expense logging","Monthly summaries","Reminders & alerts","AI Q&A on spending","Supabase storage","Export reports"],
+      cover:"",shots:[],video:""},
+    radar:{title:"Web3 Lead Radar",blob:"v3",badge:"IN DEV",
+      tags:["Web3","Scanner","SaaS"],
+      desc:"A demand scanner for builders. It watches public posts for paid dev gigs (\"need a Discord bot\", \"paying in USDC\"), scores each lead with AI and drafts a first reply — so you find clients instead of chasing them.",
+      feats:["Multi-source scanning","AI lead scoring 1–10","Budget & contact detection","Suggested reply drafts","Dashboard & filters","Status pipeline"],
+      cover:"",shots:[],video:""},
+    artsoul:{title:"ArtSoul OS",blob:"v4",badge:"IN DEV",
+      tags:["Discord","NFT","Auctions"],
+      desc:"The Discord bot for the ArtSoul NFT art protocol — an auction house and marketplace on Base & Ethereum. It posts live auction & marketplace alerts, verifies holder wallets, assigns collector roles and keeps the community in sync with on-chain activity.",
+      feats:["Live auction alerts","Marketplace drop notifications","Wallet / holder verification","Collector role tiers","On-chain activity feed","Admin controls"],
+      cover:"",shots:[],video:""}
+  };
+
+  // ===== base interactions =====
+  const header=document.getElementById('header');
+  const onScroll=()=>header.classList.toggle('scrolled',window.scrollY>24);
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+
+  const menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu');
+  const toggleMenu=(f)=>{const o=f!==undefined?f:!mobileMenu.classList.contains('open');mobileMenu.classList.toggle('open',o);menuBtn.classList.toggle('open',o);};
+  menuBtn.addEventListener('click',()=>toggleMenu());
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));
+
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.14,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4)*80+'ms';io.observe(el);});
+
+  const animateCount=(el)=>{const to=parseInt(el.dataset.to,10),dur=1400,start=performance.now();
+    const tick=(now)=>{const p=Math.min((now-start)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*to).toLocaleString();if(p<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);};
+  const cio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){animateCount(e.target);cio.unobserve(e.target);}});},{threshold:.6});
+  document.querySelectorAll('.count').forEach(el=>cio.observe(el));
+
+  document.querySelectorAll('.svc').forEach(c=>c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');}));
+
+  const glow=document.getElementById('cursorGlow');
+  if(window.matchMedia('(pointer:fine)').matches){
+    window.addEventListener('mousemove',e=>{glow.style.opacity='1';glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';});
+    window.addEventListener('mouseout',()=>glow.style.opacity='0');
+  }
+  document.getElementById('year').textContent=new Date().getFullYear();
+
+  // ===== apply card covers =====
+  document.querySelectorAll('.card').forEach(c=>{
+    const p=PROJECTS[c.dataset.id];
+    if(p&&p.cover){const img=c.querySelector('.cover');img.src=p.cover;img.onload=()=>{img.style.opacity='1';c.classList.add('has-cover');};}
+    c.addEventListener('click',()=>{location.hash='work/'+c.dataset.id;});
+  });
+
+  // ===== video embed helper =====
+  function videoEmbed(url){
+    if(!url) return '';
+    let m;
+    if(m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/)) return `<div class="m-embed"><iframe src="https://www.youtube.com/embed/${m[1]}" allowfullscreen loading="lazy"></iframe></div>`;
+    if(m=url.match(/loom\.com\/share\/([\w-]+)/)) return `<div class="m-embed"><iframe src="https://www.loom.com/embed/${m[1]}" allowfullscreen loading="lazy"></iframe></div>`;
+    if(/\.mp4($|\?)/.test(url)) return `<video class="m-video" controls src="${url}"></video>`;
+    return '';
+  }
+
+  // ===== carousel =====
+  let carIndex=0, carCount=0, carGo=null;
+  function carouselHTML(shots){
+    carCount=shots.length; carIndex=0;
+    const imgs=shots.map(s=>`<img src="${s}" alt="screenshot" loading="lazy">`).join('');
+    const nav=shots.length>1?`<button class="car-nav prev" aria-label="Previous">&#8249;</button><button class="car-nav next" aria-label="Next">&#8250;</button>`:'';
+    const dots=shots.length>1?`<div class="car-dots">${shots.map((_,i)=>`<button class="dot${i===0?' on':''}" data-i="${i}" aria-label="Slide ${i+1}"></button>`).join('')}</div>`:'';
+    return `<div class="carousel"><div class="car-track" id="carTrack">${imgs}</div>${nav}${dots}</div>`;
+  }
+  function wireCarousel(){
+    carGo=null;
+    const track=document.getElementById('carTrack'); if(!track||carCount<2) return;
+    const go=(i)=>{carIndex=(i+carCount)%carCount;track.style.transform=`translateX(${-carIndex*100}%)`;
+      document.querySelectorAll('#mMedia .dot').forEach((d,j)=>d.classList.toggle('on',j===carIndex));};
+    carGo=go;
+    const prev=document.querySelector('#mMedia .prev'),next=document.querySelector('#mMedia .next');
+    if(prev)prev.addEventListener('click',e=>{e.stopPropagation();go(carIndex-1);});
+    if(next)next.addEventListener('click',e=>{e.stopPropagation();go(carIndex+1);});
+    document.querySelectorAll('#mMedia .dot').forEach(d=>d.addEventListener('click',e=>{e.stopPropagation();go(+d.dataset.i);}));
+    let sx=null;
+    track.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+    track.addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)>40)go(dx<0?carIndex+1:carIndex-1);},{passive:true});
+  }
+
+  // ===== modal =====
+  const back=document.getElementById('modalBack');
+  let currentProjectId=null;
+  const badgeClass={"BETA":"beta","IN DEV":"dev","LIVE":"live"};
+  function openModal(id){
+    const p=PROJECTS[id];if(!p)return;
+    const media=document.getElementById('mMedia');
+    const vid=videoEmbed(p.video);
+    let html='';
+    if(vid) html+=vid;
+    if(p.shots&&p.shots.length) html+=carouselHTML(p.shots); else carCount=0;
+    if(!html) html=`<div class="m-placeholder ${p.blob}"><span>Add screenshots / a demo video for this project</span></div>`;
+    media.innerHTML=html;
+    wireCarousel();
+
+    document.getElementById('mTitle').textContent=p.title;
+    document.getElementById('mDesc').textContent=p.desc;
+    document.getElementById('mTags').innerHTML=`<span class="badge ${badgeClass[p.badge]||'beta'}" style="position:static">${p.badge}</span>`+p.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+    document.getElementById('mFeats').innerHTML=p.feats.map(f=>`<li>${f}</li>`).join('');
+
+    const act=document.getElementById('mActions');act.innerHTML='';
+    if(p.video&&!vid) act.innerHTML+=`<a class="btn btn-ghost" href="${p.video}" target="_blank" rel="noopener">Watch demo</a>`;
+    act.innerHTML+=`<a class="btn btn-primary" href="#contact" id="modalHire">Build something like this</a>`;
+    back.classList.add('open');document.body.style.overflow='hidden';
+    currentProjectId=id;
+  }
+  function doClose(){back.classList.remove('open');document.body.style.overflow='';document.getElementById('mMedia').innerHTML='';currentProjectId=null;carGo=null;}
+  function closeModal(){
+    if(/^#work\//.test(location.hash)) history.replaceState(null,'',location.pathname+location.search);
+    doClose();
+  }
+  document.getElementById('modalClose').addEventListener('click',closeModal);
+  back.addEventListener('click',e=>{if(e.target===back)closeModal();});
+  window.addEventListener('keydown',e=>{
+    if(!back.classList.contains('open'))return;
+    if(e.key==='Escape'){closeModal();return;}
+    if(carGo&&e.key==='ArrowLeft')carGo(carIndex-1);
+    if(carGo&&e.key==='ArrowRight')carGo(carIndex+1);
+  });
+  // ===== deep-link router: #work/<id> opens a shareable project =====
+  function handleRoute(){
+    const m=location.hash.match(/^#work\/([a-z0-9]+)$/i);
+    if(m&&PROJECTS[m[1]]) openModal(m[1]);
+    else if(currentProjectId) doClose();
+  }
+  window.addEventListener('hashchange',handleRoute);
+  handleRoute();
+
+  // ===== contact form =====
+  const g=id=>document.getElementById(id).value.trim();
+  function fields(){return{name:g('f-name'),contact:g('f-contact'),type:g('f-type'),budget:g('f-budget'),timeline:g('f-timeline'),payment:g('f-pay'),details:g('f-msg')};}
+  function buildBrief(){const f=fields();return `New project inquiry — ARTSOUL LABS
+--------------------------------
+Name: ${f.name||'-'}
+Contact: ${f.contact||'-'}
+Needs: ${f.type}
+Budget: ${f.budget}
+Timeline: ${f.timeline}
+Payment: ${f.payment}
+
+Details:
+${f.details||'-'}`;}
+
+  const note=document.getElementById('formNote');
+  let noteTimer;
+  function flashNote(text,isErr){note.textContent=text;note.classList.toggle('err',!!isErr);note.classList.add('show');clearTimeout(noteTimer);noteTimer=setTimeout(()=>note.classList.remove('show'),4000);}
+
+  async function copyBrief(){
+    try{await navigator.clipboard.writeText(buildBrief());}
+    catch(e){const ta=document.createElement('textarea');ta.value=buildBrief();document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}
+  }
+  function mailtoFallback(){
+    const subject=encodeURIComponent("Project inquiry — "+g('f-type'));
+    window.location.href=`mailto:${TO_EMAIL}?subject=${subject}&body=${encodeURIComponent(buildBrief())}`;
+  }
+
+  // Telegram: copy the brief and open chat
+  document.getElementById('sendTg').addEventListener('click',async()=>{
+    await copyBrief();
+    flashNote("Brief copied — paste it in our chat ✓");
+    window.open('https://t.me/'+TG,'_blank','noopener');
+  });
+
+  // Send: post to Formspree (falls back to email if not configured)
+  document.getElementById('sendForm').addEventListener('click',async(e)=>{
+    const btn=e.currentTarget, f=fields();
+    if(!f.contact){flashNote("Add your email or Telegram first",true);return;}
+    if(!f.details){flashNote("Tell me a bit about the project",true);return;}
+    if(FORMSPREE_ENDPOINT.includes('your_id')){mailtoFallback();return;}
+    const old=btn.textContent;btn.textContent="Sending...";btn.style.pointerEvents="none";
+    try{
+      const res=await fetch(FORMSPREE_ENDPOINT,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
+        body:JSON.stringify({...f,_subject:"Project inquiry — "+f.type,message:buildBrief()})});
+      if(res.ok){flashNote("Sent ✓ — I'll get back to you soon");['f-name','f-contact','f-msg'].forEach(id=>document.getElementById(id).value='');}
+      else{mailtoFallback();}
+    }catch(err){mailtoFallback();}
+    finally{btn.textContent=old;btn.style.pointerEvents='';}
+  });
+</script>
+</body>
+</html>
