@@ -5,7 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ARTSOUL LABS — Discord · Telegram · Web3 Automation</title>
 <meta name="description" content="Custom Discord bots, Telegram bots and Web3/AI automation for crypto teams, founders and online communities. Built fast, shipped clean." />
-<link rel="icon" type="image/png" sizes="any" href="images/ArtSoul_LABS_favicon.png">
+<meta property="og:title" content="ARTSOUL LABS — Discord • Telegram • Web3 Automation">
+<meta property="og:description" content="Custom Discord bots, Telegram bots, AI agents, Web3 tools and automation for crypto teams and founders.">
+<meta property="og:image" content="https://artsoullabs.netlify.app/images/preview-banner.jpg">
+<meta property="og:url" content="https://artsoullabs.netlify.app">
+<meta property="og:type" content="website">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ARTSOUL LABS">
+<meta name="twitter:description" content="Discord bots, Telegram bots, AI agents and Web3 automation.">
+<meta name="twitter:image" content="https://artsoullabs.netlify.app/images/preview-banner.jpg">
+<link rel="icon" href="images/ArtSoul_AS_circle_black_favicon.ico">
+<link rel="apple-touch-icon" href="images/ArtSoul_AS_circle_black_favicon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -21,12 +33,23 @@
   body{background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",sans-serif;font-weight:400;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative}
 /* Автоматический размер логотипа-картинки */
   .brand-img {
-    height: 24px; /* Идеальная высота, чтобы не разносить строку */
-    width: auto;  /* Ширина подстроится сама с сохранением пропорций */
-    object-fit: contain;
-    display: inline-block;
-    vertical-align: middle;
-  }
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  margin-right: -16px;
+  transform: scale(1.35);
+}
+.footer-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  margin-right: -16px;
+  transform: scale(1.35);
+}
   .bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none}
   .bg-fx .glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.55}
   .glow.a{width:50vw;height:50vw;left:-10vw;top:-10vw;background:radial-gradient(circle,rgba(205,255,80,.18),transparent 70%)}
@@ -45,11 +68,11 @@
   .brand .mark{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--acid);color:#0a0b0a;font-family:"Space Mono",monospace;font-weight:700;font-size:15px;box-shadow:0 0 22px rgba(205,255,80,.45)}
   .brand b{font-size:18px}
   .brand .sub{font-family:"Space Mono",monospace;font-size:10px;color:var(--acid);letter-spacing:.18em;margin-top:2px}
-  nav .links{display:flex;align-items:center;gap:30px}
-  nav .links a{color:var(--ink-dim);text-decoration:none;font-size:14.5px;font-weight:500;transition:color .2s;position:relative}
-  nav .links a:hover{color:var(--ink)}
-  nav .links a::after{content:"";position:absolute;left:0;bottom:-6px;height:1px;width:0;background:var(--acid);transition:width .25s var(--ease)}
-  nav .links a:hover::after{width:100%}
+  nav.links{display:flex;align-items:center;gap:30px}
+  nav.links a{color:var(--ink-dim);text-decoration:none;font-size:14.5px;font-weight:500;transition:color .2s;position:relative}
+  nav.links a:hover{color:var(--ink)}
+  nav.links a::after{content:"";position:absolute;left:0;bottom:-6px;height:1px;width:0;background:var(--acid);transition:width .25s var(--ease)}
+  nav.links a:hover::after{width:100%}
   .btn{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:14.5px;cursor:pointer;text-decoration:none;border:none;padding:12px 22px;border-radius:100px;transition:all .25s var(--ease);display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
   .btn-primary{background:var(--acid);color:#0a0b0a}
   .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 34px rgba(205,255,80,.32)}
@@ -179,8 +202,6 @@
   .field label{font-family:"Space Mono",monospace;font-size:11.5px;letter-spacing:.1em;color:var(--ink-dim);text-transform:uppercase}
   .field input,.field select,.field textarea{background:rgba(255,255,255,.03);border:1px solid var(--line-soft);border-radius:12px;padding:13px 15px;color:var(--ink);font-family:"Bricolage Grotesque",sans-serif;font-size:15px;transition:border-color .2s;outline:none;color-scheme:dark;}
   .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--acid)}
-  .field select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23cdff50' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
-  .field select option{background: #0f110f; color: #f3f5ee;}
   .field textarea{resize:vertical;min-height:110px}
   .form-actions{grid-column:1 / -1;display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:4px}
   .form-note{font-family:"Space Mono",monospace;font-size:11.5px;color:var(--acid);opacity:0;transition:opacity .3s}
@@ -201,7 +222,7 @@
 
   @media(max-width:920px){.svc-grid{grid-template-columns:repeat(2,1fr)}.work-grid{grid-template-columns:1fr}}
   @media(max-width:680px){
-    nav .links,header .btn.btn-primary{display:none}
+    nav.links,header .btn.btn-primary{display:none}
     .menu-btn{display:flex}
     .svc-grid{grid-template-columns:1fr}
     .form-wrap{grid-template-columns:1fr}
@@ -241,6 +262,16 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
+.sel-wrap{position:relative}
+.sel-wrap select{display:none}
+.sel-btn{width:100%;background:#0f110f;border:1px solid var(--line-soft);border-radius:12px;padding:13px 40px 13px 15px;color:var(--ink);font-family:"Bricolage Grotesque",sans-serif;font-size:15px;cursor:pointer;text-align:left;transition:border-color .2s;position:relative;outline:none}
+.sel-btn::after{content:"";position:absolute;right:16px;top:50%;transform:translateY(-50%);width:12px;height:12px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23cdff50' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-size:contain;transition:transform .2s}
+.sel-btn.open{border-color:var(--acid)}
+.sel-btn.open::after{transform:translateY(-50%) rotate(180deg)}
+.sel-list{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#0f110f;border:1px solid var(--line);border-radius:12px;z-index:200;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity .2s,transform .2s}
+.sel-list.open{opacity:1;pointer-events:auto;transform:none}
+.sel-opt{padding:11px 15px;color:var(--ink);font-family:"Bricolage Grotesque",sans-serif;font-size:15px;cursor:pointer;transition:background .15s}
+.sel-opt:hover,.sel-opt.active{background:rgba(205,255,80,.08);color:var(--acid)}
 </style>
 </head>
 <body>
@@ -252,8 +283,19 @@
 
 <header id="header">
   <div class="wrap nav">
-   <a href="#top" class="brand"></span class="gradient-text"><img src="images/ArtSoul_AS_512.png"></span><span><b class="gradient-text">ARTSOUL LABS</b><br><span class="gradient-text">AUTOMATION STUDIO</span></span></a>
-    <nav class="links"></span><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a href="#contact">Contact</a></nav>
+   <a href="#top" class="brand">
+  <img src="images/ArtSoul_AS_fixed_256.png" alt="" class="brand-img">
+  <span>
+    <b class="gradient-text">ARTSOUL LABS</b><br>
+    <span class="gradient-text">AUTOMATION STUDIO</span>
+  </span>
+</a>
+    <nav class="links">
+  <a href="#services">Services</a>
+  <a href="#work">Work</a>
+  <a href="#process">Process</a>
+  <a href="#contact">Contact</a>
+</nav>
     <a href="#contact" class="btn btn-primary">Hire me <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
@@ -360,18 +402,37 @@
   </div>
 </section>
 
-<footer>
+  <footer>
   <div class="wrap">
     <div class="foot-grid">
-      <a href="#top" class="brand"><span class="gradient-text"><img src="images/ArtSoul_AS_512.png" alt="AS" class="brand-img"></span><span><b class="gradient-text">ARTSOUL LABS</b><br><span class="gradient-text">AUTOMATION STUDIO</span></span></a>
-      <div class="socials">
-        <a href="https://t.me/maysonkiller23" target="_blank" rel="noopener">TELEGRAM</a>
-        <a href="https://x.com/maysonkiller23" target="_blank" rel="noopener">X / TWITTER</a>
-        <a href="https://github.com/maysonkiller" target="_blank" rel="noopener">GITHUB</a>
-        <a href="https://discord.com/users/560945997220413440" target="_blank" rel="noopener">DISCORD</a>
+      <a href="#top" class="brand">
+        <img src="images/ArtSoul_AS_fixed_256.png" alt="" class="footer-logo">
+        <span>
+          <b class="gradient-text">ARTSOUL LABS</b><br>
+          <span class="gradient-text">AUTOMATION STUDIO</span>
+        </span>
+      </a>
+
+      <div class="socials" style="display: flex; gap: 20px; align-items: center;">
+        <a href="https://t.me/maysonkiller23" target="_blank" rel="noopener" title="Telegram">
+          <i class="fa-brands fa-telegram"></i>
+        </a>
+        <a href="https://x.com/maysonkiller23" target="_blank" rel="noopener" title="X / Twitter">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://github.com/maysonkiller" target="_blank" rel="noopener" title="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://discord.com/users/560945997220413440" target="_blank" rel="noopener" title="Discord">
+          <i class="fa-brands fa-discord"></i>
+        </a>
       </div>
     </div>
-    <div class="foot-bottom"><span>© <span id="year"></span> ARTSOUL LABS — BUILT WITH CODE &amp; COFFEE</span><span>DISCORD · TELEGRAM · WEB3 · AI</span></div>
+
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> All rights reserved.</span>
+      <span>BUILT WITH CODE &amp; COFFEE</span>
+    </div>
   </div>
 </footer>
 
@@ -390,6 +451,61 @@
 </div>
 
 <script>
+  document.querySelectorAll('.field select').forEach(sel=>{
+  const wrap=document.createElement('div');
+  wrap.className='sel-wrap';
+  sel.parentNode.insertBefore(wrap,sel);
+  wrap.appendChild(sel);
+
+  const btn=document.createElement('button');
+  btn.type='button';
+  btn.className='sel-btn';
+  btn.textContent=sel.options[sel.selectedIndex].text;
+
+  const list=document.createElement('div');
+  list.className='sel-list';
+
+  Array.from(sel.options).forEach((o,i)=>{
+    const opt=document.createElement('div');
+    opt.className='sel-opt'+(i===sel.selectedIndex?' active':'');
+    opt.textContent=o.text;
+    opt.dataset.i=i;
+
+    opt.addEventListener('click',()=>{
+      sel.selectedIndex=i;
+      btn.textContent=o.text;
+      list.querySelectorAll('.sel-opt').forEach(x=>x.classList.remove('active'));
+      opt.classList.add('active');
+      btn.classList.remove('open');
+      list.classList.remove('open');
+    });
+
+    list.appendChild(opt);
+  });
+
+  wrap.appendChild(btn);
+  wrap.appendChild(list);
+
+  btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const isOpen=list.classList.contains('open');
+    document.querySelectorAll('.sel-list.open').forEach(l=>{
+      l.classList.remove('open');
+      l.previousSibling.classList.remove('open');
+    });
+    if(!isOpen){
+      list.classList.add('open');
+      btn.classList.add('open');
+    }
+  });
+});
+
+document.addEventListener('click',()=>{
+  document.querySelectorAll('.sel-list.open').forEach(l=>{
+    l.classList.remove('open');
+    l.previousSibling.classList.remove('open');
+  });
+});
   // ========= YOUR CONTACTS =========
   const TG = "maysonkiller23";              // Telegram username
   const TO_EMAIL = "maysonkiller@gmail.com";  // fallback email (used if Formspree not set)
